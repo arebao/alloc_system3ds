@@ -34,35 +34,11 @@ const MIN_ALIGN: usize = 8;
               target_arch = "sparc64")))]
 const MIN_ALIGN: usize = 16;
 
-use core::alloc::{AllocRef, GlobalAlloc, AllocErr, Layout}; 
+use core::alloc::{Allocator, GlobalAlloc}; 
 use core::ptr::NonNull;
 
 pub struct System;
 
-unsafe impl Alloc for System {
-    #[inline]
-    unsafe fn alloc(&mut self, layout: Layout) -> Result<NonNull<u8>, AllocErr> {
-        NonNull::new(GlobalAlloc::alloc(self, layout)).ok_or(AllocErr)
-    }
-
-    #[inline]
-    unsafe fn alloc_zeroed(&mut self, layout: Layout) -> Result<NonNull<u8>, AllocErr> {
-        NonNull::new(GlobalAlloc::alloc_zeroed(self, layout)).ok_or(AllocErr)
-    }
-
-    #[inline]
-    unsafe fn dealloc(&mut self, ptr: NonNull<u8>, layout: Layout) {
-        GlobalAlloc::dealloc(self, ptr.as_ptr(), layout)
-    }
-
-    #[inline]
-    unsafe fn realloc(&mut self,
-                      ptr: NonNull<u8>,
-                      layout: Layout,
-                      new_size: usize) -> Result<NonNull<u8>, AllocErr> {
-        NonNull::new(GlobalAlloc::realloc(self, ptr.as_ptr(), layout, new_size)).ok_or(AllocErr)
-    }
-}
 
 mod realloc_fallback {
     use core::alloc::{GlobalAlloc, Layout};
