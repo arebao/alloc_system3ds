@@ -34,7 +34,7 @@ const MIN_ALIGN: usize = 8;
               target_arch = "sparc64")))]
 const MIN_ALIGN: usize = 16;
 
-use core::alloc::{Alloc, GlobalAlloc, AllocErr, Layout}; 
+use core::alloc::{AllocRef, GlobalAlloc, AllocErr, Layout}; 
 use core::ptr::NonNull;
 
 pub struct System;
